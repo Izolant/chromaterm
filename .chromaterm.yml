@@ -1,0 +1,144 @@
+rules:
+# GENERAL
+    - description: devicename#/>
+      regex: (^[a-zA-Z0-9\-]+)((?:\([a-zA-Z0-9-_\/]+\))*)(>|#)
+      #regex: (^[a-zA-Z0-9\-]*)(\([a-zA-Z0-9-_\/]*\))?(>|#) 
+      color: 
+          1: f#00ffff
+          2: f#00ff00
+          3: f#5f61ad
+
+    - description: IPv4
+      regex: \b(?<!\.)((25[0-5]|(2[0-4]|[0-1]?\d)?\d)\.){3}(25[0-5]|(2[0-4]|[0-1]?\d)?\d)(/\d+)?(?!\.)\b
+      color: f#00ffff
+    - description: IPv6 (boundaries don't work here as they can be in the start or end of the match, so using lookaheads and lookbehinds instead)
+      regex: (?i)((?<=[\W])|^)(?<!:)(([\da-f]{1,4}:){7}[\da-f]{1,4}|([\da-f]{1,4}:){1,1}(:[\da-f]{1,4}){1,6}|([\da-f]{1,4}:){1,2}(:[\da-f]{1,4}){1,5}|([\da-f]{1,4}:){1,3}(:[\da-f]{1,4}){1,4}|([\da-f]{1,4}:){1,4}(:[\da-f]{1,4}){1,3}|([\da-f]{1,4}:){1,5}(:[\da-f]{1,4}){1,2}|([\da-f]{1,4}:){1,6}(:[\da-f]{1,4})|([\da-f]{1,4}:){1,7}:|:((:[\da-f]{1,4}){1,7}|:)|::(ffff(:0{1,4})?:)?((25[0-5]|(2[0-4]|[0-1]?\d)?\d)\.){3}(25[0-5]|(2[0-4]|[0-1]?\d)?\d)|([\da-f]{1,4}:){1,4}:((25[0-5]|(2[0-4]|[0-1]?\d)?\d)\.){3}(25[0-5]|(2[0-4]|[0-1]?\d)?\d))(%[\da-z]+)?(/\d+)?(?!:)((?=[\W])|$)
+      color: f#ff00ff
+    - description: MAC addresses
+      regex: (?i)\b((?<!:)([\da-f]{1,2}:){5}[\da-f]{1,2}(?!:)|(?<!\.)([\da-f]{4}\.){2}[\da-f]{4}(?!\.))\b
+      color: f#5f61ad
+
+    - description: BGP - Transitional states
+      regex: \b(Connect|Active|OpenSent|OpenConfirm)\b
+      color: f#ff0000
+    - description: BGP - Transitional states
+      regex: \b(Idle(\(Admin\))?)
+      color: f#ffff00
+    - description: BGP - Transitional states
+      regex: \b((Estab)\b)|(Established$)
+      color: f#6CFF00
+    
+    - description: Generics - Bad
+      regex: \b(errdisabled)\b
+      color: f#ff0000    
+    - description: Generics - NotGood\NotBad
+      regex: \b(notconnect)\b
+      color: f#ffff00
+    - description: Generics - Good
+      regex: \b(connected)\b
+      color: f#00ff00
+    - description: Generics - NotGood\NotBad
+      regex: \b(Not Present)\b
+      color: f#ffff00
+
+    - description: route-map name 
+      regex: route-map\s[a-zA-Z0-9_-]+\s(permit|deny)\s([0-9]+)$
+      color: f#FFFFFF bold
+    - description: Match prefix-list|as-path|community
+      regex: match (community|as-path|(ip|ipv6) address prefix-list)(\s[a-zA-Z0-9_-]+)
+      color: f#F701FF 
+    - description: route-map set
+      regex: \s\sset .*
+      color: f#00F969
+    - description: sub-route-map
+      regex: (sub-route-map(\s[a-zA-Z0-9_-]+))
+      color: f#00D1DB 
+    - description: Continue
+      regex: Continue\W\s(sequence)\s([0-9]+)$
+      color: f#00D1DB 
+    - description: 
+      regex: (Description:|Match clauses:|SubRouteMap:|Set clauses:)
+      color: f#5a5c5f 
+
+    - description: link - CUST
+      regex: (\s|\(|^)((PREPARED)(;|-|_))?(Po\d+-member-)?(Po\d+-)?(CUST-)([A-Z\d]+)([A-Z-_\d]+)(;(\S+))?(\s|$)
+      color: 
+          3: f#ff0000 # PREPARED                # cervena
+          4: f#ff0000 # -                       # cervena
+          5: f#0000FF # Pox-MEMBER              # zelena
+          6: f#0000FF # Pox-                    # zelena
+          7: f#0000FF # TRANSIT|IX|PNI|CACHE    # modra
+          8: f#00DF3A # NAME of TRANSIT,..      # cervena
+          9: f#0000FF # vsetk za ;              # cervena
+          10: f#0000FF # vsetk za ;             # cervena
+    - description: link - CACHE, IX, PNI, TRANSIT
+      regex: (\s|\()((PREPARED)(;|-|_))?(Po\d+-member-)?(Po\d+-)?((?:CACHE|IX|PNI|TRANSIT)(?:-))([A-Z-_\d]+)(;(\S+))?(\s|$)
+      color: 
+          3: f#ff0000 # PREPARED                # cervena
+          4: f#ff0000 # -                       # cervena
+          5: f#0000FF # Pox-MEMBER              # zelena
+          6: f#0000FF # Pox-                    # zelena
+          7: f#0000FF # TRANSIT|IX|PNI|CACHE    # modra
+          8: f#00DF3A # NAME of TRANSIT,..      # cervena
+          9: f#0000FF # vsetk za ;              # cervena
+          10: f#0000FF # vsetk za ;             # cervena
+    - description: link - L2TRAN, L3TRANSIT
+      regex: (\s|\(|^)((PREPARED)(;|-|_))?(Po\d+-member-)?(Po\d+-)?(L2TRAN-|L3TRANSIT-)([A-Z-_\d]+)(;(\S+))?(\s|$)
+      color: 
+          3: f#ff0000 # PREPARED                # cervena
+          4: f#ff0000 # -                       # cervena
+          5: f#0000FF # Pox-MEMBER              # zelena
+          6: f#0000FF # Pox-                    # zelena
+          7: f#0000FF # TRANSIT|IX|PNI|CACHE    # modra
+          8: f#00DF3A # NAME of TRANSIT,..      # cervena
+          9: f#0000FF # vsetk za ;              # cervena
+          10: f#0000FF # vsetk za ;             # cervena
+    - description: link - BACKBONE, UPLINK, DOWNLINK, CROSSLINK, LINK
+      regex: (\s|\(|^)((PREPARED)(;|-|_))?(Po\d+-member-)?(Po\d+-)?(BACKBONE-|UPLINK-|DOWNLINK-|CROSSLINK-|LINK-)([a-zA-Z\d\-\/]+)(;(\S+))?(\s|$)
+      color: 
+          3: f#ff0000 # PREPARED                # cervena
+          4: f#ff0000 # -                       # cervena
+          5: f#0000FF # Pox-MEMBER              # zelena
+          6: f#0000FF # Pox-                    # zelena
+          7: f#0000FF # TRANSIT|IX|PNI|CACHE    # modra
+          8: f#00DF3A # NAME of TRANSIT,..      # cervena
+          9: f#0000FF # vsetk za ;              # cervena
+          10: f#0000FF # vsetk za ;             # cervena
+
+
+    - description: bgp - CUST
+      regex: \s(CUST(?:6)?(?:-|_))([A-Z-\d]+)(_(?:LOW|MID|HIGH))?
+      color: 
+          1: f#ADD8E6 # slabo-modra
+          2: f#00DF3A # zelena
+          3: f#0000FF # modra
+    - description: bgp - BB
+      regex: \s(BB(?:6)?(?:-|_))([A-Z-\d]+)(_(?:LOW|MID|HIGH))?
+      color: 
+          1: f#0000FF # modra
+          2: f#00DF3A # zelena
+          3: f#0000FF # modra
+    - description: bgp - IX
+      regex: \s(IX(?:6)?(?:-|_))([A-Z-\d]+)(_(?:LOW|MID|HIGH))?
+      color: 
+          1: f#ff0000 # cervena
+          2: f#00DF3A # zelena
+          3: f#0000FF # modra
+    - description: bgp - PNI
+      regex: \s(PNI(?:6)?(?:-|_))([A-Z-\d]+)(_(?:LOW|MID|HIGH))?
+      color: 
+          1: f#ff0000 # cervena
+          2: f#00DF3A # zelena
+          3: f#0000FF # modra
+    - description: bgp - TRANSIT
+      regex: \s(TRANSIT(?:6)?(?:-|_))([A-Z-\d]+)(_(?:LOW|MID|HIGH))?
+      color: 
+          1: f#ff0000 # cervena
+          2: f#00DF3A # zelena
+          3: f#0000FF # modra
+    - description: bgp - PEER
+      regex: \s(PEER(?:6)?(?:-|_))([A-Z-\d]+)(_(?:LOW|MID|HIGH))?
+      color: 
+          1: f#0000FF # modra
+          2: f#00DF3A # zelena
+          3: f#0000FF # modra
