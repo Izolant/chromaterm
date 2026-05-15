@@ -1,12 +1,12 @@
 rules:
 # GENERAL
+
     - description: devicename#/>
       regex: (^[a-zA-Z0-9\-]+)((?:\([a-zA-Z0-9-_\/]+\))*)(>|#)
-      #regex: (^[a-zA-Z0-9\-]*)(\([a-zA-Z0-9-_\/]*\))?(>|#) 
       color: 
           1: f#00ffff
           2: f#00ff00
-          3: f#5f61ad
+          3: f#7173d1
 
     - description: IPv4
       regex: \b(?<!\.)((25[0-5]|(2[0-4]|[0-1]?\d)?\d)\.){3}(25[0-5]|(2[0-4]|[0-1]?\d)?\d)(/\d+)?(?!\.)\b
@@ -16,7 +16,7 @@ rules:
       color: f#ff00ff
     - description: MAC addresses
       regex: (?i)\b((?<!:)([\da-f]{1,2}:){5}[\da-f]{1,2}(?!:)|(?<!\.)([\da-f]{4}\.){2}[\da-f]{4}(?!\.))\b
-      color: f#5f61ad
+      color: f#7173d1
 
     - description: BGP - Transitional states
       regex: \b(Connect|Active|OpenSent|OpenConfirm)\b
@@ -27,6 +27,18 @@ rules:
     - description: BGP - Transitional states
       regex: \b((Estab)\b)|(Established$)
       color: f#6CFF00
+
+    #- description: Generics - Bad
+    #  regex: (?i)\b(password|abnormal(ly)?|down|los(t|s|ing)|err(or(s)?)?|(den(y|ies|ied)?)|reject(ing|ed)?|drop(ped|s)?|(err(\-)?)?disable(d)?|(time(d)?(\-)?out)|fail(s|ed|iure)?|disconnect(ed)?|unreachable|invalid|bad|notconnect|unusable|block(ing|ed)?|blk|inaccessible|wrong|collision(s)?|unsynchronized|mismatch|runts|CRC)\b
+    #  color: f#ffff00
+    #  
+    #- description: Generics - Good
+    #  regex: (?i)\b(up|ok(ay)?|permit(ed|s)?|accept(s|ed)?|enable(d)?|online|succe((ss(ful|fully)?)|ed(ed)?)?|connect(ed)?|reachable|valid|forwarding|synchronized)\b
+    #  color: f#00ff00
+    #- description: Generics - Bad
+    #  regex: (?i)\b(password|abnormal(ly)?|down|los(t|s|ing)|err(or(s)?)?|(den(y|ies|ied)?)|reject(ing|ed)?|drop(ped|s)?|(err(\-)?)?disable(d)?|(time(d)?(\-)?out)|fail(s|ed|iure)?|disconnect(ed)?|unreachable|invalid|bad|notconnect|unusable|block(ing|ed)?|blk|inaccessible|wrong|collision(s)?|unsynchronized|mismatch|runts|CRC)\b
+    #  color: f#ffff00
+    #  
     
     - description: Generics - Bad
       regex: \b(errdisabled)\b
@@ -53,6 +65,9 @@ rules:
     - description: sub-route-map
       regex: (sub-route-map(\s[a-zA-Z0-9_-]+))
       color: f#00D1DB 
+   # - description: description popis
+   #   regex: description\s#.*$
+   #   color: f#FFFFFF 
     - description: Continue
       regex: Continue\W\s(sequence)\s([0-9]+)$
       color: f#00D1DB 
@@ -136,9 +151,26 @@ rules:
           1: f#ff0000 # cervena
           2: f#00DF3A # zelena
           3: f#0000FF # modra
+    - description: bgp - GRETUN/VXLAN
+      regex: \s((?:GRETUN|VXLAN)(?:6)?(?:-|_))([A-Z-\d]+)(_(?:LOW|MID|HIGH))?
+      color: 
+          1: f#ff0000 # cervena
+          2: f#00DF3A # zelena
+          3: f#0000FF # modra
     - description: bgp - PEER
       regex: \s(PEER(?:6)?(?:-|_))([A-Z-\d]+)(_(?:LOW|MID|HIGH))?
       color: 
           1: f#0000FF # modra
           2: f#00DF3A # zelena
           3: f#0000FF # modra
+
+    - description: diff add
+      regex: (^(\+)(.*))
+      color: 
+          1: f#00DF3A
+          2: f#00DF3A
+    - description: diff remove
+      regex: (^(\-)(.*))
+      color: 
+          1: f#ff0000
+          2: f#ff0000
